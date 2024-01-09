@@ -1,0 +1,45 @@
+# Digital Analytics Program
+
+```elixir
+Mix.install([
+  {:httpoison, "~> 2.2"},
+  {:jason, "~> 1.4"},
+  {:kino_explorer, "~> 0.1.15"}
+])
+```
+
+## Section
+
+```elixir
+# Enter your open.data.gov API Key as a Livebook Secret named "API_DATA_GOV_KEY"
+# For reference on Livebook secrets - https://www.youtube.com/watch?v=laG04lxagZI
+{:ok, api_key} = System.fetch_env("LB_API_DATA_GOV_KEY")
+```
+
+```elixir
+# Specify which DAP environment to fetch data from
+
+# environment = "develop"
+# environment = "staging"
+# production has a blank path
+environment = ""
+```
+
+```elixir
+url =
+  "https://api.gsa.gov/analytics/dap/#{environment}/v1.1/reports/language/data?api_key=#{api_key}"
+```
+
+```elixir
+%{body: body} = HTTPoison.get!(url)
+json = Jason.decode!(body)
+```
+
+<!-- livebook:{"attrs":"eyJhc3NpZ25fdG8iOm51bGwsImNvbGxlY3QiOmZhbHNlLCJkYXRhX2ZyYW1lIjoianNvbiIsImRhdGFfZnJhbWVfYWxpYXMiOiJFbGl4aXIuRXhwbG9yZXIuRGF0YUZyYW1lIiwiaXNfZGF0YV9mcmFtZSI6ZmFsc2UsImxhenkiOnRydWUsIm1pc3NpbmdfcmVxdWlyZSI6IkVsaXhpci5FeHBsb3Jlci5EYXRhRnJhbWUiLCJvcGVyYXRpb25zIjpbeyJhY3RpdmUiOnRydWUsImNvbHVtbnMiOlsibGFuZ3VhZ2UiXSwiZGF0YV9vcHRpb25zIjp7ImRhdGUiOiJzdHJpbmciLCJpZCI6ImludGVnZXIiLCJsYW5ndWFnZSI6InN0cmluZyIsInJlcG9ydF9hZ2VuY3kiOiJmbG9hdCIsInJlcG9ydF9uYW1lIjoic3RyaW5nIiwidmlzaXRzIjoiaW50ZWdlciJ9LCJvcGVyYXRpb25fdHlwZSI6Imdyb3VwX2J5In1dfQ","chunks":null,"kind":"Elixir.KinoExplorer.DataTransformCell","livebook_object":"smart_cell"} -->
+
+```elixir
+require Explorer.DataFrame
+json |> Explorer.DataFrame.new(lazy: true) |> Explorer.DataFrame.group_by("language")
+```
+
+<!-- livebook:{"offset":1533,"stamp":{"token":"XCP.OPIIg2DbRhE5L71gLIa22B9YdTiEMBSX98_abejbChg_0BEFzDVhxEE86Y-IfvVs694c4DKhXKFEZRzTvw06WTIuxMaJN71b95cysTpZ4S8S7Lv1UMFY7Sg3pw","version":2}} -->
