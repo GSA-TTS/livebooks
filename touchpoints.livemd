@@ -58,3 +58,76 @@ json = Jason.decode!(body)
 # Display the record count
 submissions |> length
 ```
+
+### Fetch other CX objects
+
+<!-- livebook:{"break_markdown":true} -->
+
+#### Websites
+
+```elixir
+url = "https://api.gsa.gov/analytics/touchpoints/v1/websites.json?api_key=#{api_key}"
+```
+
+```elixir
+%{body: body} = HTTPoison.get!(url)
+json = Jason.decode!(body)
+```
+
+#### Social Media Accounts
+
+```elixir
+url =
+  "https://api.gsa.gov/analytics/touchpoints/v1/digital_service_accounts.json?api_key=#{api_key}"
+```
+
+```elixir
+%{body: body} = HTTPoison.get!(url)
+json = Jason.decode!(body)
+```
+
+#### Mobile Applications
+
+```elixir
+url = "https://api.gsa.gov/analytics/touchpoints/v1/digital_products.json?api_key=#{api_key}"
+```
+
+```elixir
+%{body: body} = HTTPoison.get!(url)
+json = Jason.decode!(body)
+```
+
+#### Organizations
+
+```elixir
+url = "https://api.gsa.gov/analytics/touchpoints/v1/organizations.json?api_key=#{api_key}"
+```
+
+```elixir
+%{body: body} = HTTPoison.get!(url)
+json = Jason.decode!(body)
+```
+
+#### Service Providers
+
+```elixir
+url = "https://api.gsa.gov/analytics/touchpoints/v1/service_providers.json?api_key=#{api_key}"
+```
+
+```elixir
+%{body: body} = HTTPoison.get!(url)
+json = Jason.decode!(body)
+```
+
+#### Services
+
+```elixir
+url = "https://api.gsa.gov/analytics/touchpoints/v1/services.json?api_key=#{api_key}"
+```
+
+```elixir
+%{body: body} = HTTPoison.get!(url)
+json = Jason.decode!(body)
+```
+
+<!-- livebook:{"offset":2677,"stamp":{"token":"XCP.LFOA3W2QXzVgzemriTaSnoa_uzRAoaYwElk_iNzhVg1zaJafgZsZ_O76r1BCuXprBDCGAG-eCEoh-hl0G6dnUHOrg8CMi9zMm0VeyRpbfZBbnauU18iCSDettQ","version":2}} -->
