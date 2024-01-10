@@ -1,0 +1,60 @@
+# Touchpoints
+
+```elixir
+Mix.install([
+  {:httpoison, "~> 2.2"},
+  {:jason, "~> 1.4"},
+  {:kino_explorer, "~> 0.1.15"}
+])
+```
+
+## Section
+
+```elixir
+# Enter your open.data.gov API Key as a Livebook Secret named "API_DATA_GOV_KEY"
+# For reference on Livebook secrets - https://www.youtube.com/watch?v=laG04lxagZI
+{:ok, api_key} = System.fetch_env("LB_API_DATA_GOV_KEY")
+```
+
+### Fetch all forms for a user
+
+```elixir
+url = "https://api.gsa.gov/analytics/touchpoints/v1/forms.json?api_key=#{api_key}"
+```
+
+```elixir
+%{body: body} = HTTPoison.get!(url)
+
+json = Jason.decode!(body)
+```
+
+### Fetch a form and its submissions
+
+```elixir
+# Specify the Short UUID of the form you want to fetch here
+form_short_uuid = "SHORT_UUID_GOES_HERE"
+```
+
+```elixir
+# Be sure to the set form_short_uuid above, and ensure the `start_date` is presented
+# Also, check the page size (2000 max)
+# And pagination starts at page 0.
+url =
+  "https://api.gsa.gov/analytics/touchpoints/v1/forms/#{form_short_uuid}.json?api_key=#{api_key}&size=2000&page=0&start_date=2020-01-01"
+```
+
+```elixir
+%{body: body} = HTTPoison.get!(url)
+json = Jason.decode!(body)
+```
+
+```elixir
+# Grab the "data" key out of .json
+%{"data" => data} = json
+
+# Grab the "included" key out of .json, which contains the Submissions
+%{"included" => submissions} = json
+
+# Display the record count
+submissions |> length
+```
