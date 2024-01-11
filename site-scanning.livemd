@@ -1,0 +1,77 @@
+# Site Scanning
+
+```elixir
+Mix.install([
+  {:httpoison, "~> 2.2"},
+  {:jason, "~> 1.4"},
+  {:kino_explorer, "~> 0.1.15"},
+  {:kino_vega_lite, "~> 0.1.10"}
+])
+```
+
+## Section
+
+```elixir
+# Enter your open.data.gov API Key as a Livebook Secret named "API_DATA_GOV_KEY"
+# For reference on Livebook secrets - https://www.youtube.com/watch?v=laG04lxagZI
+{:ok, api_key} = System.fetch_env("LB_API_DATA_GOV_KEY")
+```
+
+### Fetch all websites
+
+```elixir
+url = "https://api.gsa.gov/technology/site-scanning/v1/websites?api_key=#{api_key}&limit=100"
+```
+
+```elixir
+%{body: body} = HTTPoison.get!(url)
+json = Jason.decode!(body)
+
+# Grab the "items" key from the API's json response
+%{"items" => sites} = json
+```
+
+#### Show all websites
+
+```elixir
+sites
+```
+
+#### Re-encode the data as .json and write it to file
+
+```elixir
+json_data = sites |> Jason.encode!()
+
+File.write!("site-scanning-sites.json", json_data)
+
+# Alternatively, you could just write the original body of the response to file
+# File.write!("site-scanning-sites.json", body)
+```
+
+#### Show one website
+
+```elixir
+sites |> Enum.at(0)
+```
+
+#### Find information about a single domain
+
+```elixir
+domain = "gsa.gov"
+```
+
+```elixir
+url =
+  "https://api.gsa.gov/technology/site-scanning/v1/websites/#{domain}?api_key=#{api_key}&limit=100"
+```
+
+```elixir
+%{body: body} = HTTPoison.get!(url)
+json = Jason.decode!(body)
+```
+
+#### Write the response to a file
+
+```elixir
+File.write!("site-scanning-single-site-response.json", body)
+```
